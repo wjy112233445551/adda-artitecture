@@ -25,24 +25,24 @@ export function MagazineGallery({ images, title, captions = [], galleryOrder, co
   const templateImgs: string[] = [];
 
   if (galleryOrder && galleryOrder.length > 1) {
-    // galleryOrder[1..] 对应 galleryImages，需减去封面偏移
-    // galleryOrder[i] 是完整列表索引，在 slice(1) 中实际位置 = galleryOrder[i] - 1
-    // 但 galleryOrder 的语义是顺序而非绝对索引
-    // 简单处理：按 galleryOrder[1..] 的顺序从 galleryImages 取图
+    // galleryOrder: 完整列表的排列顺序，[0]=封面, [1..]=模板+缩略图
+    // galleryImages: images.slice(1)，不含封面
+    const coverIdx = galleryOrder[0];
     const ordered: string[] = [];
     const used = new Set<number>();
+
     for (let i = 1; i < galleryOrder.length; i++) {
       const idx = galleryOrder[i];
-      if (idx >= 0 && idx < images.length + 1 && !used.has(idx)) { // +1 因为 images 去掉了封面
-        // idx 是完整列表索引，在 slice(1) 中对应 idx-1
-        const actualIdx = idx - 1;
+      if (idx >= 0 && idx < images.length + 1 && !used.has(idx)) {
+        // 在 slice(1) 中的位置：封面之前的图位置不变，封面之后的图位置 -1
+        const actualIdx = idx < coverIdx ? idx : idx - 1;
         if (actualIdx >= 0 && actualIdx < galleryImages.length) {
           ordered.push(galleryImages[actualIdx]);
           used.add(idx);
         }
       }
     }
-    // 补齐剩余
+    // 补齐剩余（未被 galleryOrder 引用的）
     for (let i = 0; i < galleryImages.length; i++) {
       if (!ordered.includes(galleryImages[i])) ordered.push(galleryImages[i]);
     }
