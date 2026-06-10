@@ -152,7 +152,8 @@ export function Preloader() {
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 z-[9999] bg-[#111] flex items-center justify-center"
+      className="fixed inset-0 z-[9999] flex items-center justify-center"
+      style={{ height: "100dvh", background: "#161412" }}
       style={{ height: "100dvh" }}
       suppressHydrationWarning
     >
@@ -165,7 +166,9 @@ export function Preloader() {
           style={{
             top: 0,
             height: "50%",
-            background: "#1a1a1a",
+            background: "#1c1916 url(/paper-texture.webp) repeat",
+            backgroundSize: "200px",
+            backgroundBlendMode: "overlay",
             clipPath: `polygon(0 0, 100% 0, 100% 100%, ${tearEdge}, 0% 100%)`, // tearEdge at bottom of top panel
             boxShadow: "0 4px 16px rgba(0,0,0,0.5)",
           }}
@@ -178,7 +181,9 @@ export function Preloader() {
           style={{
             bottom: 0,
             height: "50%",
-            background: "#1a1a1a",
+            background: "#1c1916 url(/paper-texture.webp) repeat",
+            backgroundSize: "200px",
+            backgroundBlendMode: "overlay",
             clipPath: `polygon(0 0, ${tearEdgeBottom}, 100% 0, 100% 100%, 0 100%)`, // tearEdge at top of bottom panel
             boxShadow: "0 -4px 16px rgba(0,0,0,0.5)",
           }}
