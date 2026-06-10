@@ -154,7 +154,6 @@ export function Preloader() {
       ref={containerRef}
       className="fixed inset-0 z-[9999] flex items-center justify-center"
       style={{ height: "100dvh", background: "#0a0a0a" }}
-      style={{ height: "100dvh" }}
       suppressHydrationWarning
     >
       <div className="relative w-full h-full grid" style={{ placeItems: "center" }}>
