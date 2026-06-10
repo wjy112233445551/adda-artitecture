@@ -101,7 +101,7 @@ export default function LanyardCard() {
 
         {/* Logo */}
         <img
-          src="/logo.png"
+          src="/logo.webp"
           alt="ADDA"
           style={{
             width: "80%",

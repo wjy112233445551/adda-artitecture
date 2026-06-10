@@ -48,7 +48,7 @@ export function Navigation() {
         style={{ padding: "clamp(14px, 2vw, 28px) clamp(20px, 3vw, 36px)" }}>
         <a href="/" onClick={(e) => { e.preventDefault(); document.getElementById("modal-overlay") ? window.dispatchEvent(new CustomEvent("close-modal")) : navigateWithTransition("/"); }}
           className="cursor-pointer">
-          <img src="/logo.png" alt="ADDA" className="w-auto" style={{ height: "clamp(24px, 3vw, 42px)" }} />
+          <img src="/logo.webp" alt="ADDA" className="w-auto" style={{ height: "clamp(24px, 3vw, 42px)" }} />
         </a>
 
         <div className="flex items-center" style={{ gap: "clamp(12px, 2.5vw, 36px)" }}>

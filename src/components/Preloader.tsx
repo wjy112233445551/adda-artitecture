@@ -185,7 +185,7 @@ export function Preloader() {
         {/* Logo + Enter button — same center position */}
         <div ref={logoRef} className="absolute inset-0 opacity-0 flex flex-col items-center justify-center"
           style={{ gap: "clamp(16px, 3vw, 32px)" }}>
-          <img src="/logo.png" alt="ADDA" className="w-auto"
+          <img src="/logo.webp" alt="ADDA" className="w-auto"
             style={{ height: "clamp(64px, 12vw, 144px)" }} />
           <div ref={enterRef} className="opacity-0">
             <button

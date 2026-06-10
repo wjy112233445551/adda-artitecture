@@ -4,7 +4,7 @@ export function Footer() {
       {/* Fixed logo at bottom */}
       <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 mix-blend-difference">
         <img
-          src="/logo.png"
+          src="/logo.webp"
           alt="ADDA"
           className="w-auto"
           style={{ height: "clamp(32px, 4vw, 72px)" }}

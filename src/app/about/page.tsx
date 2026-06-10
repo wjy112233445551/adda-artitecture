@@ -49,7 +49,7 @@ export default function About() {
           </div>
         </div>
         <div className="mt-16 -mx-6 md:col-span-2">
-          <img src="/about-image.jpg" alt="ADDA Architecture" className="w-full" />
+          <img src="/about-image.webp" alt="ADDA Architecture" className="w-full" />
         </div>
       </div>
     </div>
