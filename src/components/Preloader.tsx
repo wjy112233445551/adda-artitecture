@@ -82,26 +82,45 @@ export function Preloader() {
     tl.set(counterRowRef.current, { display: "none" });
     tl.set(revealRef.current, { display: "flex" });
 
-    // ═══ Phase 3: Logo CENTER reveal（仅桌面端）═══
+    // ═══ Phase 3: Logo + Photo ═══
     const isMobile = window.innerWidth < 768;
 
-    if (!isMobile) {
-      tl.fromTo(
-        logoImgRef.current,
-        { opacity: 0, scale: 0.82 },
-        { opacity: 1, scale: 1, duration: 1.0, ease: "power4.out" }
+    // ── 手机端：logo 居中 + Enter（无照片）──
+    if (isMobile) {
+      gsap.set(logoFlyRef.current, {
+        position: "absolute", left: "50%", top: "50%",
+        xPercent: -50, yPercent: -50, display: "block",
+      });
+      tl.fromTo(logoImgRef.current,
+        { opacity: 0, scale: 0.85 },
+        { opacity: 1, scale: 1, duration: 0.9, ease: "power4.out" }
       );
-      tl.fromTo(
-        logoLabelRef.current,
+      tl.fromTo(logoLabelRef.current,
         { opacity: 0, y: 6 },
         { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" },
-        "-=0.35"
+        "-=0.3"
       );
-      tl.to({}, { duration: 0.35 });
-    } else {
-      // 手机端：从头隐藏 logo
-      gsap.set(logoFlyRef.current, { display: "none" });
+      // 移动端跳过照片，直接 Enter
+      tl.fromTo(enterRef.current,
+        { opacity: 0, y: 8 },
+        { opacity: 1, y: 0, duration: 0.55, ease: "power2.out" }
+      );
+      return; // 移动端到此结束，不执行后续桌面端逻辑
     }
+
+    // ── 桌面端：logo 居中→左移 + 照片 ──
+    tl.fromTo(
+      logoImgRef.current,
+      { opacity: 0, scale: 0.82 },
+      { opacity: 1, scale: 1, duration: 1.0, ease: "power4.out" }
+    );
+    tl.fromTo(
+      logoLabelRef.current,
+      { opacity: 0, y: 6 },
+      { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" },
+      "-=0.35"
+    );
+    tl.to({}, { duration: 0.35 });
 
     // ═══ Phase 4: Logo slides left via CSS left transition ═══
     const logoCenter = logoFlyRef.current;
