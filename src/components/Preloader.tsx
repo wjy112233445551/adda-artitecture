@@ -138,7 +138,7 @@ export function Preloader() {
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 z-[9999] bg-[#040404] flex items-center justify-center"
+      className="fixed inset-0 z-[9999] bg-[#111] flex items-center justify-center"
       style={{ height: "100dvh" }}
       suppressHydrationWarning
     >
@@ -150,10 +150,10 @@ export function Preloader() {
           className="absolute inset-x-0 z-20"
           style={{
             top: 0,
-            height: "calc(50% + 8px)",
-            background: "#040404",
+            height: "calc(50% + 10px)",
+            background: "#1a1a1a",
             clipPath: `polygon(0 0, 100% 0, 100% 100%, ${tearEdge}, 0% 100%)`,
-            boxShadow: "0 4px 12px rgba(0,0,0,0.6)",
+            boxShadow: "0 4px 16px rgba(0,0,0,0.5)",
           }}
         />
 
@@ -163,21 +163,10 @@ export function Preloader() {
           className="absolute inset-x-0 z-20"
           style={{
             bottom: 0,
-            height: "calc(50% + 8px)",
-            background: "#040404",
+            height: "calc(50% + 10px)",
+            background: "#1a1a1a",
             clipPath: `polygon(0 0, ${tearEdge}, 100% 0, 100% 100%, 0 100%)`,
-            boxShadow: "0 -4px 12px rgba(0,0,0,0.6)",
-          }}
-        />
-
-        {/* ── 撕裂缝发光 ── */}
-        <div
-          className="absolute inset-x-0 z-15 pointer-events-none"
-          style={{
-            top: "calc(50% - 1px)",
-            height: "3px",
-            background: "rgba(255,255,255,0.18)",
-            filter: "blur(2px)",
+            boxShadow: "0 -4px 16px rgba(0,0,0,0.5)",
           }}
         />
 
