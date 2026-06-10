@@ -65,37 +65,49 @@ export function Preloader() {
     tl.to([leftTextRef.current, rightTextRef.current],
       { opacity: 1, duration: 0.5, ease: "power2.out" }, "-=0.25");
 
-    // ═══ Phase 2: 撕纸效果 ═══
-    // 计数器轻微膨胀后消失
-    tl.to(counterRef.current, { scale: 1.08, duration: 0.2, ease: "power2.in" });
-    tl.to(counterRowRef.current, { opacity: 0, duration: 0.35, ease: "power3.in" }, "-=0.1");
-    tl.set(counterRowRef.current, { display: "none" });
+    // ═══ Phase 2: 撕纸 ═══
+    const label = "tear";
 
-    // Logo 从撕裂缝隙中显现
-    tl.fromTo(logoRef.current,
-      { opacity: 0, scale: 0.92, y: 0 },
-      { opacity: 1, scale: 1, y: 0, duration: 0.7, ease: "power4.out" },
-      "-=0.2"
-    );
+    // 2a — 蓄力：画面抖动
+    tl.to(counterRowRef.current, { x: -3, duration: 0.06, ease: "none" }, label);
+    tl.to(counterRowRef.current, { x: 4, duration: 0.06, ease: "none" });
+    tl.to(counterRowRef.current, { x: -2, duration: 0.05, ease: "none" });
+    tl.to(counterRowRef.current, { x: 0, duration: 0.05, ease: "none" });
 
-    // 撕纸面板：从中间"裂开"，向上下滑动
+    // 2b — 裂缝出现，计数器内容暗淡
+    tl.to(counterRowRef.current, { opacity: 0.3, duration: 0.2, ease: "power2.in" });
+
+    // 2c — 撕裂！纸面裂开
     tl.to(tearTopRef.current, {
-      y: "-100%",
-      duration: 0.8,
-      ease: "power3.inOut",
-    }, "-=0.5");
+      y: "-105%",
+      rotation: -3,
+      duration: 0.9,
+      ease: "power3.in",
+    }, `${label}+=0.25`);
 
     tl.to(tearBotRef.current, {
-      y: "100%",
-      duration: 0.8,
-      ease: "power3.inOut",
-    }, "-=0.8");
+      y: "105%",
+      rotation: 3,
+      duration: 0.9,
+      ease: "power3.in",
+    }, `${label}+=0.25`);
+
+    // 2d — 计数器消失
+    tl.to(counterRowRef.current, { opacity: 0, duration: 0.3, ease: "power2.in" }, `${label}+=0.15`);
+    tl.set(counterRowRef.current, { display: "none" });
+
+    // 2e — Logo 从裂缝中浮现
+    tl.fromTo(logoRef.current,
+      { opacity: 0, scale: 0.88, y: 8 },
+      { opacity: 1, scale: 1, y: 0, duration: 0.75, ease: "power4.out" },
+      `${label}+=0.35`
+    );
 
     // ═══ Phase 3: Enter ═══
     tl.fromTo(enterRef.current,
-      { opacity: 0, y: 10 },
+      { opacity: 0, y: 12 },
       { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" },
-      "-=0.15"
+      "-=0.1"
     );
 
     // Fallback
@@ -110,19 +122,18 @@ export function Preloader() {
     }, 7000);
   }, []);
 
-  // 生成撕纸锯齿路径
-  const zigzag = (segments: number): string => {
-    const step = 100 / segments;
+  // 生成不规则撕纸锯齿
+  const tearEdge = (() => {
+    const segs = 8;
+    const step = 100 / segs;
     let path = "";
-    for (let i = 0; i <= segments; i++) {
+    for (let i = 0; i <= segs; i++) {
       const x = i * step;
-      const y = i % 2 === 0 ? 2 : -2;
-      path += `${x}% ${50 + y}%, `;
+      const jitter = (Math.sin(i * 1.7) * 6 + Math.sin(i * 3.1) * 4);
+      path += `${x}% ${50 + jitter}%, `;
     }
     return path.slice(0, -2);
-  };
-
-  const jaggedEdge = zigzag(12);
+  })();
 
   return (
     <div
@@ -139,9 +150,10 @@ export function Preloader() {
           className="absolute inset-x-0 z-20"
           style={{
             top: 0,
-            height: "50%",
+            height: "calc(50% + 8px)",
             background: "#040404",
-            clipPath: `polygon(0 0, 100% 0, 100% 100%, ${jaggedEdge}, 0% 100%)`,
+            clipPath: `polygon(0 0, 100% 0, 100% 100%, ${tearEdge}, 0% 100%)`,
+            boxShadow: "0 4px 12px rgba(0,0,0,0.6)",
           }}
         />
 
@@ -151,20 +163,21 @@ export function Preloader() {
           className="absolute inset-x-0 z-20"
           style={{
             bottom: 0,
-            height: "50%",
+            height: "calc(50% + 8px)",
             background: "#040404",
-            clipPath: `polygon(0 0, ${jaggedEdge}, 100% 0, 100% 100%, 0 100%)`,
+            clipPath: `polygon(0 0, ${tearEdge}, 100% 0, 100% 100%, 0 100%)`,
+            boxShadow: "0 -4px 12px rgba(0,0,0,0.6)",
           }}
         />
 
-        {/* ── 撕纸边缘发光 ── */}
+        {/* ── 撕裂缝发光 ── */}
         <div
-          className="absolute inset-x-0 z-10 pointer-events-none"
+          className="absolute inset-x-0 z-15 pointer-events-none"
           style={{
             top: "calc(50% - 1px)",
-            height: "2px",
-            background: "rgba(255,255,255,0.12)",
-            filter: "blur(1px)",
+            height: "3px",
+            background: "rgba(255,255,255,0.18)",
+            filter: "blur(2px)",
           }}
         />
 
