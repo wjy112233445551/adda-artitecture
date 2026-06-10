@@ -41,7 +41,7 @@ export function Preloader() {
 
     const tl = gsap.timeline();
 
-    // Phase 1: Counter animation (0 → 100)
+    // ═══ Phase 1: Counter (0 → 100) ═══
     const counterObj = { value: 0 };
     tl.to(counterObj, {
       value: 100,
@@ -49,49 +49,40 @@ export function Preloader() {
       ease: "none",
       snap: { value: 1 },
       onUpdate: () => {
-        if (counterRef.current) {
-          counterRef.current.textContent = String(counterObj.value);
-        }
+        if (counterRef.current) counterRef.current.textContent = String(counterObj.value);
       },
     });
 
-    // Phase 1 parallel: Text & lines fade in
-    tl.fromTo(
-      [leftTextRef.current, rightTextRef.current],
-      { opacity: 0.3 },
-      { opacity: 0.5, duration: 0.6, ease: "power2.out" },
-      0
+    // 文字渐现
+    tl.fromTo([leftTextRef.current, rightTextRef.current], { opacity: 0.2 }, { opacity: 0.5, duration: 0.5, ease: "power2.out" }, 0);
+    tl.fromTo([leftLineRef.current, rightLineRef.current], { scaleY: 0 }, { scaleY: 1, duration: 0.7, ease: "power3.out" }, 0);
+    tl.to([leftTextRef.current, rightTextRef.current], { opacity: 1, duration: 0.5, ease: "power2.out" }, "-=0.25");
+
+    // ═══ Phase 2: 爆发过渡 ═══
+    // 计数器放大 → 文字向两侧飞出
+    tl.to(counterRef.current, { scale: 1.3, duration: 0.25, ease: "power2.in" });
+    tl.to([leftTextRef.current, rightTextRef.current], { scale: 0.9, opacity: 0.5, duration: 0.25, ease: "power2.in" }, "-=0.25");
+
+    // 爆发：计数器缩小消失，文字飞远
+    tl.to(counterRef.current, { scale: 0, opacity: 0, duration: 0.4, ease: "power3.in" }, "burst");
+    tl.to(leftTextRef.current, { x: -30, opacity: 0, duration: 0.4, ease: "power3.in" }, "burst");
+    tl.to(rightTextRef.current, { x: 30, opacity: 0, duration: 0.4, ease: "power3.in" }, "burst");
+    tl.to([leftLineRef.current, rightLineRef.current], { scaleY: 3, opacity: 0, duration: 0.35, ease: "power3.in" }, "burst");
+
+    // Logo 从中心弹出（弹簧感）
+    tl.fromTo(logoRef.current,
+      { opacity: 0, scale: 0.3, y: 0 },
+      { opacity: 1, scale: 1.06, y: 0, duration: 0.5, ease: "power4.out" },
+      "burst+=0.15"
     );
+    // 弹簧回弹
+    tl.to(logoRef.current, { scale: 1, duration: 0.3, ease: "elastic.out(1, 0.4)" });
 
-    tl.fromTo(
-      [leftLineRef.current, rightLineRef.current],
-      { scaleY: 0 },
-      { scaleY: 1, duration: 0.8, ease: "power3.out" },
-      0
-    );
-
-    // Phase 2: Text brightens at end
-    tl.to(
-      [leftTextRef.current, rightTextRef.current],
-      { opacity: 1, duration: 0.6, ease: "power2.out" },
-      "-=0.3"
-    );
-
-    // Phase 3: Counter row fades out
-    tl.to(counterRowRef.current, { opacity: 0, duration: 0.5, ease: "power3.in" });
-
-    // Phase 4: Logo appears
-    tl.fromTo(
-      logoRef.current,
-      { opacity: 0, scale: 0.9, y: 10 },
-      { opacity: 1, scale: 1, y: 0, duration: 0.8, ease: "power3.out" }
-    );
-
-    // Phase 5: Enter button fades in below logo
-    tl.fromTo(
-      enterRef.current,
-      { opacity: 0, y: 8 },
-      { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" }
+    // ═══ Phase 3: Enter ═══
+    tl.fromTo(enterRef.current,
+      { opacity: 0, y: 12 },
+      { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" },
+      "-=0.1"
     );
 
     // Fallback: 如果 5 秒后动画还没完成，强制显示 Enter 按钮
