@@ -84,9 +84,9 @@ export function MagazineGallery({ images, title, captions = [], galleryOrder, co
             {group.layout === "pair" && (
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "clamp(6px, 1.2vw, 16px)" }}>
                 {group.imgs.map((img, ii) => img && (
-                  <div key={ii} style={{ overflow: "hidden" }}>
+                  <div key={ii} className="overflow-hidden aspect-[4/5] bg-white/[0.02]">
                     <img src={img} alt={`${title} ${gi + 1}-${ii + 1}`}
-                      className="w-full h-auto"
+                      className="w-full h-full object-cover"
                       loading="lazy" />
                   </div>
                 ))}
@@ -96,9 +96,9 @@ export function MagazineGallery({ images, title, captions = [], galleryOrder, co
             {group.layout === "trio" && (
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "clamp(4px, 1vw, 12px)" }}>
                 {group.imgs.map((img, ii) => img && (
-                  <div key={ii} style={{ overflow: "hidden" }}>
+                  <div key={ii} className="overflow-hidden aspect-[4/5] bg-white/[0.02]">
                     <img src={img} alt={`${title} ${gi + 1}-${ii + 1}`}
-                      className="w-full h-auto"
+                      className="w-full h-full object-cover"
                       loading="lazy" />
                   </div>
                 ))}

@@ -162,7 +162,11 @@ function GallerySection({
             ) : (
               <div className={`grid grid-cols-1 ${cols} ${gap} ${margin}`}>
                 {group.map((img, i) =>
-                  img ? <GalleryImage key={i} src={img} alt={`${title} - ${globalStart + i + 2}`} index={globalStart + i + 1} total={total} /> : null
+                  img ? (
+                    <div key={i} className="overflow-hidden aspect-[4/5] bg-white/[0.02]">
+                      <img src={img} alt={`${title} - ${globalStart + i + 2}`} loading="lazy" className="w-full h-full object-cover" />
+                    </div>
+                  ) : null
                 )}
               </div>
             )}
