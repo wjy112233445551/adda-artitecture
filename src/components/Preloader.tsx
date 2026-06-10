@@ -324,11 +324,11 @@ export function Preloader() {
         .preloader-photo-mobile { max-width: 92vw !important; }
       }
     `}</style>
-    <div ref={containerRef} className="fixed inset-0 z-[9999] bg-[#060606] flex items-center justify-center" suppressHydrationWarning>
-      <div className="relative w-full h-full grid" style={{ placeItems: "center" }}>
+    <div ref={containerRef} className="fixed inset-0 z-[9999] bg-[#060606] flex items-center justify-center" style={{ minHeight: "100dvh" }} suppressHydrationWarning>
+      <div className="relative w-full grid" style={{ minHeight: "100dvh", placeItems: "center" }}>
 
         {/* Waves */}
-        <div className="absolute inset-0 z-0 overflow-hidden opacity-70">
+        <div className="absolute inset-0 z-0 opacity-70">
           <Waves
             lineColor="rgba(255,255,255,0.16)" backgroundColor="transparent"
             waveSpeedX={0.006} waveSpeedY={0.003} waveAmpX={16} waveAmpY={8}
