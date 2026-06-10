@@ -152,8 +152,8 @@ export function Preloader() {
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 z-[9999] flex items-center justify-center"
-      style={{ height: "100dvh", background: "#0a0a0a" }}
+      className="fixed inset-0 z-[9999] bg-[#111] flex items-center justify-center"
+      style={{ height: "100dvh" }}
       suppressHydrationWarning
     >
       <div className="relative w-full h-full grid" style={{ placeItems: "center" }}>
@@ -165,7 +165,7 @@ export function Preloader() {
           style={{
             top: 0,
             height: "50%",
-            background: "#1a1815",
+            background: "#1a1a1a",
             clipPath: `polygon(0 0, 100% 0, 100% 100%, ${tearEdge}, 0% 100%)`, // tearEdge at bottom of top panel
             boxShadow: "0 4px 16px rgba(0,0,0,0.5)",
           }}
@@ -178,7 +178,7 @@ export function Preloader() {
           style={{
             bottom: 0,
             height: "50%",
-            background: "#1a1815",
+            background: "#1a1a1a",
             clipPath: `polygon(0 0, ${tearEdgeBottom}, 100% 0, 100% 100%, 0 100%)`, // tearEdge at top of bottom panel
             boxShadow: "0 -4px 16px rgba(0,0,0,0.5)",
           }}
