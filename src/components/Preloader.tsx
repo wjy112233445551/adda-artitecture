@@ -122,15 +122,29 @@ export function Preloader() {
     }, 7000);
   }, []);
 
-  // 生成不规则撕纸锯齿
+  // 撕纸锯齿 — 沿面板底边/顶边分布
   const tearEdge = (() => {
     const segs = 8;
     const step = 100 / segs;
     let path = "";
     for (let i = 0; i <= segs; i++) {
       const x = i * step;
-      const jitter = (Math.sin(i * 1.7) * 6 + Math.sin(i * 3.1) * 4);
-      path += `${x}% ${50 + jitter}%, `;
+      // jitter around 100% (bottom edge of top panel)
+      const y = 100 + (Math.sin(i * 1.7) * 6 + Math.sin(i * 3.1) * 4);
+      path += `${x}% ${y}%, `;
+    }
+    return path.slice(0, -2);
+  })();
+
+  // 下方面板的撕纸锯齿 — 沿面板顶边
+  const tearEdgeBottom = (() => {
+    const segs = 8;
+    const step = 100 / segs;
+    let path = "";
+    for (let i = 0; i <= segs; i++) {
+      const x = i * step;
+      const y = 0 + (Math.sin(i * 1.7) * 6 + Math.sin(i * 3.1) * 4);
+      path += `${x}% ${y}%, `;
     }
     return path.slice(0, -2);
   })();
@@ -150,9 +164,9 @@ export function Preloader() {
           className="absolute inset-x-0 z-20"
           style={{
             top: 0,
-            height: "calc(50% + 10px)",
+            height: "50%",
             background: "#1a1a1a",
-            clipPath: `polygon(0 0, 100% 0, 100% 100%, ${tearEdge}, 0% 100%)`,
+            clipPath: `polygon(0 0, 100% 0, 100% 100%, ${tearEdge}, 0% 100%)`, // tearEdge at bottom of top panel
             boxShadow: "0 4px 16px rgba(0,0,0,0.5)",
           }}
         />
@@ -163,9 +177,9 @@ export function Preloader() {
           className="absolute inset-x-0 z-20"
           style={{
             bottom: 0,
-            height: "calc(50% + 10px)",
+            height: "50%",
             background: "#1a1a1a",
-            clipPath: `polygon(0 0, ${tearEdge}, 100% 0, 100% 100%, 0 100%)`,
+            clipPath: `polygon(0 0, ${tearEdgeBottom}, 100% 0, 100% 100%, 0 100%)`, // tearEdge at top of bottom panel
             boxShadow: "0 -4px 16px rgba(0,0,0,0.5)",
           }}
         />
@@ -181,7 +195,7 @@ export function Preloader() {
             <div ref={leftLineRef} className="bg-white/10 hidden md:block"
               style={{ width: "clamp(1.5px, 0.4vw, 3px)", height: "clamp(20px, 5vw, 56px)", marginRight: "clamp(8px, 1.5vw, 24px)" }} />
             <span ref={counterRef} className="text-white tabular-nums text-center leading-tight"
-              style={{ fontFamily: "var(--font-display)", fontSize: "clamp(40px, 10vw, 108px)", minWidth: "clamp(3rem, 10vw, 11rem)", display: "inline-block", transform: "translateY(-12px)" }}>
+              style={{ fontFamily: "var(--font-display)", fontSize: "clamp(40px, 10vw, 108px)", minWidth: "clamp(3rem, 10vw, 11rem)", display: "inline-block" }}>
               0
             </span>
             <div ref={rightLineRef} className="bg-white/10 hidden md:block"
