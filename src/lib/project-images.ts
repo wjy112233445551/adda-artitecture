@@ -180,7 +180,6 @@ export const projectImages: Record<string, string[]> = {
     "/projects/binjiangxi/DSF1965.webp",
     "/projects/binjiangxi/DSF1988.webp",
     "/projects/binjiangxi/DSF1994.webp",
-    "/projects/binjiangxi/DSF2028.webp",
     "/projects/binjiangxi/DSF2058.webp",
     "/projects/binjiangxi/DSF2070.webp",
     "/projects/binjiangxi/DSF2093.webp",
@@ -2838,7 +2837,6 @@ export const projectImages: Record<string, string[]> = {
   "yishaolingshi": [
     "/projects/yishaolingshi/3df54426898ea4979c8f4e8f81d8d87.webp",
     "/projects/yishaolingshi/DSF1938.webp",
-    "/projects/yishaolingshi/DSF1965.webp",
     "/projects/yishaolingshi/DSF1971.webp",
     "/projects/yishaolingshi/DSF1976.webp",
     "/projects/yishaolingshi/DSF1982.webp",

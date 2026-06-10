@@ -125,11 +125,8 @@ export function Preloader() {
       tl.set(logoLeft, { opacity: 1 }, "-=0.01");
       tl.set(logoCenter, { display: "none" });
     } else if (isMobile && logoCenter) {
-      // 手机端：logo 保持居中可见
-      logoCenter.style.transition = "none";
-      logoCenter.style.left = "50%";
-      logoCenter.style.top = "50%";
-      logoCenter.style.transform = "translate(-50%, -50%)";
+      // 手机端：不显示居中 logo，直接隐藏
+      tl.set(logoCenter, { display: "none" });
     }
 
     // ═══ Photo reveal: 相纸随风飘入 + 胶片显影 ═══
