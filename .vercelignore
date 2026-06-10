@@ -1,4 +1,3 @@
-# 仅本地使用的 API（文件浏览器、预览、部署）
-src/app/api/browse
+# 仅本地使用的 API（预览、部署）
 src/app/api/preview
 src/app/api/deploy

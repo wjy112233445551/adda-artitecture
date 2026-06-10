@@ -321,8 +321,8 @@ export function Preloader() {
         .preloader-photo-mobile { max-width: 92vw !important; }
       }
     `}</style>
-    <div ref={containerRef} className="fixed inset-0 z-[9999] bg-[#060606] flex items-center justify-center" style={{ minHeight: "100dvh" }} suppressHydrationWarning>
-      <div className="relative w-full grid" style={{ minHeight: "100dvh", placeItems: "center" }}>
+    <div ref={containerRef} className="fixed inset-0 z-[9999] bg-[#060606] flex items-center justify-center" style={{ height: "100dvh", minHeight: "-webkit-fill-available" }} suppressHydrationWarning>
+      <div className="relative w-full grid" style={{ height: "100dvh", minHeight: "-webkit-fill-available", placeItems: "center" }}>
 
         {/* Waves */}
         <div className="absolute inset-0 z-0 opacity-70">
