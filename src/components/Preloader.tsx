@@ -82,25 +82,28 @@ export function Preloader() {
     tl.set(counterRowRef.current, { display: "none" });
     tl.set(revealRef.current, { display: "flex" });
 
-    // ═══ Phase 3: Logo CENTER reveal ═══
-    // logoFlyRef 初始 CSS: absolute, top:50%, left:50%, translate(-50%,-50%)
-    tl.fromTo(
-      logoImgRef.current,
-      { opacity: 0, scale: 0.82 },
-      { opacity: 1, scale: 1, duration: 1.0, ease: "power4.out" }
-    );
-    tl.fromTo(
-      logoLabelRef.current,
-      { opacity: 0, y: 6 },
-      { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" },
-      "-=0.35"
-    );
+    // ═══ Phase 3: Logo CENTER reveal（仅桌面端）═══
+    const isMobile = window.innerWidth < 768;
 
-    // Brief pause at center
-    tl.to({}, { duration: 0.35 });
+    if (!isMobile) {
+      tl.fromTo(
+        logoImgRef.current,
+        { opacity: 0, scale: 0.82 },
+        { opacity: 1, scale: 1, duration: 1.0, ease: "power4.out" }
+      );
+      tl.fromTo(
+        logoLabelRef.current,
+        { opacity: 0, y: 6 },
+        { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" },
+        "-=0.35"
+      );
+      tl.to({}, { duration: 0.35 });
+    } else {
+      // 手机端：从头隐藏 logo
+      gsap.set(logoFlyRef.current, { display: "none" });
+    }
 
     // ═══ Phase 4: Logo slides left via CSS left transition ═══
-    const isMobile = window.innerWidth < 768;
     const logoCenter = logoFlyRef.current;
     const logoLeft = document.querySelector(".preloader-logo-left") as HTMLElement;
 
@@ -123,9 +126,6 @@ export function Preloader() {
 
       tl.to(logoCenter, { opacity: 0, duration: 0.01 }, "+=1.05");
       tl.set(logoLeft, { opacity: 1 }, "-=0.01");
-      tl.set(logoCenter, { display: "none" });
-    } else if (isMobile && logoCenter) {
-      // 手机端：不显示居中 logo，直接隐藏
       tl.set(logoCenter, { display: "none" });
     }
 
