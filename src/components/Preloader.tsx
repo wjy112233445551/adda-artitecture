@@ -223,8 +223,8 @@ export function Preloader() {
 
         // 3D tilt
         gsap.to(photoEl, {
-          rotateY: dx * 4,
-          rotateX: -dy * 4,
+          rotateY: dx * (isMobile ? 2.5 : 4),
+          rotateX: -dy * (isMobile ? 2.5 : 4),
           duration: 0.8,
           ease: "power2.out",
           overwrite: "auto",
@@ -281,16 +281,16 @@ export function Preloader() {
         vignetteEl.style.background = "radial-gradient(ellipse at center, transparent 40%, rgba(6,6,6,0.7) 100%)";
       }
     };
-    revealRef.current?.addEventListener("mousemove", handleMouseMove);
-    revealRef.current?.addEventListener("mouseleave", handleMouseLeave);
+    revealRef.current?.addEventListener("pointermove", handleMouseMove);
+    revealRef.current?.addEventListener("pointerleave", handleMouseLeave); revealRef.current?.addEventListener("touchend", handleMouseLeave);
 
     // Enter hover
     const enterEl = enterRef.current?.querySelector("button");
     if (enterEl) {
-      enterEl.addEventListener("mouseenter", () => gsap.to(enterEl, { scale: 1.04, duration: 0.35, ease: "power2.out" }));
-      enterEl.addEventListener("mouseleave", () => gsap.to(enterEl, { scale: 1, duration: 0.35, ease: "power2.out" }));
-      enterEl.addEventListener("mousedown", () => gsap.to(enterEl, { scale: 0.96, duration: 0.08, ease: "power2.out" }));
-      enterEl.addEventListener("mouseup", () => gsap.to(enterEl, { scale: 1.04, duration: 0.15, ease: "power2.out" }));
+      enterEl.addEventListener("pointerenter", () => gsap.to(enterEl, { scale: 1.04, duration: 0.35, ease: "power2.out" }));
+      enterEl.addEventListener("pointerleave", () => gsap.to(enterEl, { scale: 1, duration: 0.35, ease: "power2.out" }));
+      enterEl.addEventListener("pointerdown", () => gsap.to(enterEl, { scale: 0.96, duration: 0.08, ease: "power2.out" }));
+      enterEl.addEventListener("pointerup", () => gsap.to(enterEl, { scale: 1.04, duration: 0.15, ease: "power2.out" }));
     }
 
     // Fallback
