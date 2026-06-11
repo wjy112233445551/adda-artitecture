@@ -112,7 +112,7 @@ export function Preloader() {
     >
       <div className="relative w-full h-full grid" style={{ placeItems: "center" }}>
         {/* 光标 blob 交互 */}
-        <BlobCursor fillColor="#d2d2d2" trailCount={3} sizes={[60,125,75]} innerColor="rgba(255,255,255,0.9)" opacities={[0.5,0.35,0.2]} zIndex={90} />
+        <BlobCursor fillColor="#f5faff" trailCount={3} sizes={[100,180,120]} innerSizes={[30,50,38]} innerColor="rgba(255,255,255,0.95)" opacities={[0.55,0.35,0.2]} zIndex={90} />
         {/* Counter — center of screen, fades out */}
         <div ref={counterRowRef} className="flex flex-col md:flex-row items-center justify-center gap-y-3 md:gap-y-0 px-4"
           style={{ gap: "clamp(6px, 2vw, 32px)" }}>
