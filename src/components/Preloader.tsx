@@ -79,14 +79,14 @@ export function Preloader() {
 
     // 2c — 撕裂！纸面裂开
     tl.to(tearTopRef.current, {
-      y: "-105%",
+      y: "-120%",
       rotation: -3,
       duration: 0.9,
       ease: "power3.in",
     }, `${label}+=0.25`);
 
     tl.to(tearBotRef.current, {
-      y: "105%",
+      y: "120%",
       rotation: 3,
       duration: 0.9,
       ease: "power3.in",
@@ -114,8 +114,8 @@ export function Preloader() {
     setTimeout(() => {
       if (containerRef.current && containerRef.current.style.display !== "none") {
         if (counterRowRef.current) { counterRowRef.current.style.opacity = "0"; counterRowRef.current.style.display = "none"; }
-        if (tearTopRef.current) tearTopRef.current.style.transform = "translateY(-100%)";
-        if (tearBotRef.current) tearBotRef.current.style.transform = "translateY(100%)";
+        if (tearTopRef.current) tearTopRef.current.style.transform = "translateY(-120%)";
+        if (tearBotRef.current) tearBotRef.current.style.transform = "translateY(120%)";
         if (logoRef.current) { logoRef.current.style.opacity = "1"; logoRef.current.style.transform = "scale(1)"; }
         if (enterRef.current) { enterRef.current.style.opacity = "1"; enterRef.current.style.transform = "translateY(0)"; }
       }
