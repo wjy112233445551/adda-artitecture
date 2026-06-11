@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import Waves from "@/components/Waves";
+import BlobCursor from "@/components/BlobCursor/BlobCursor";
 
 export function Preloader() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -111,6 +112,8 @@ export function Preloader() {
       suppressHydrationWarning
     >
       <div className="relative w-full h-full grid" style={{ placeItems: "center" }}>
+        {/* 光标 blob 交互 */}
+        <BlobCursor />
         {/* Counter — center of screen, fades out */}
         <div ref={counterRowRef} className="flex flex-col md:flex-row items-center justify-center gap-y-3 md:gap-y-0 px-4"
           style={{ gap: "clamp(6px, 2vw, 32px)" }}>
