@@ -1,5 +1,20 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Nanum Myeongjo";
+  src: url("/fonts/nanum-regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Nanum Myeongjo";
+  src: url("/fonts/nanum-bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme inline {
   --color-background: var(--bg);
   --color-foreground: var(--fg);
@@ -8,7 +23,7 @@
 :root {
   --bg: #040404;
   --fg: #e5e5e5;
-  --font-display: "Georgia", "Times New Roman", "Songti SC", serif;
+  --font-display: "Nanum Myeongjo", "Georgia", "Times New Roman", serif;
   --font-body: "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", system-ui, -apple-system, sans-serif;
 }
 
