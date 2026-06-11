@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
+import BlobCursor from "@/components/BlobCursor/BlobCursor";
 
 export function Preloader() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -183,6 +184,26 @@ export function Preloader() {
 
       {/* 小白球 */}
       <div ref={ballRef} className="absolute z-30" style={{ left: 0, top: 0, translate: "-50% -50%" }} />
+
+      {/* Blob 光标交互 — 溅射后激活 */}
+      <BlobCursor
+        blobType="circle"
+        fillColor="rgba(255,255,255,0.5)"
+        trailCount={4}
+        sizes={[40, 90, 60, 30]}
+        innerSizes={[14, 28, 20, 10]}
+        innerColor="rgba(255,255,255,0.9)"
+        opacities={[0.5, 0.3, 0.2, 0.1]}
+        shadowColor="rgba(255,255,255,0.3)"
+        shadowBlur={20}
+        shadowOffsetX={0}
+        shadowOffsetY={0}
+        filterStdDeviation={40}
+        useFilter={true}
+        fastDuration={0.08}
+        slowDuration={0.6}
+        zIndex={5}
+      />
 
       {/* Logo + Enter */}
       <div ref={logoRef} className="absolute z-40 opacity-0 flex flex-col items-center"
