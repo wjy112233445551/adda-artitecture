@@ -92,12 +92,9 @@ export default function BlobCursor({
       onTouchMove={handleMove}
     >
       {useFilter && (
-        <svg style={{ position: 'absolute', width: 0, height: 0 }}>
-          <filter id={filterId}>
-            <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation={filterStdDeviation} />
-            <feColorMatrix in="blur" values={filterColorMatrixValues} />
-          </filter>
-        </svg>
+        <svg style={{ position: 'absolute', width: 0, height: 0 }} dangerouslySetInnerHTML={{
+          __html: `<filter id="${filterId}"><feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="${filterStdDeviation}"/><feColorMatrix in="blur" values="${filterColorMatrixValues}"/></filter>`
+        }} />
       )}
 
       <div className="blob-main" style={{ filter: useFilter ? `url(#${filterId})` : undefined }}>

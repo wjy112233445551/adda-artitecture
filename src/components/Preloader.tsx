@@ -199,7 +199,7 @@ export function Preloader() {
         shadowOffsetX={0}
         shadowOffsetY={0}
         filterStdDeviation={40}
-        useFilter={true}
+        useFilter={false}
         fastDuration={0.08}
         slowDuration={0.6}
         zIndex={5}
