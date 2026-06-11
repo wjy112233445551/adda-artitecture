@@ -5,7 +5,7 @@ import gsap from "gsap";
 
 export function Preloader() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const beamRef = useRef<HTMLDivElement>(null);
+  const maskRef = useRef<HTMLDivElement>(null);
   const photoRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const logoRef = useRef<HTMLDivElement>(null);
@@ -29,46 +29,50 @@ export function Preloader() {
           if (containerRef.current) containerRef.current.style.display = "none";
         },
       });
-      exitTimeline.current.to([logoRef.current, enterRef.current], { opacity: 0, y: -20, duration: 0.4, ease: "power2.in" });
+      exitTimeline.current.to([logoRef.current, enterRef.current, maskRef.current], { opacity: 0, duration: 0.4, ease: "power2.in" });
       exitTimeline.current.to(containerRef.current, { opacity: 0, duration: 0.5, ease: "power3.inOut" }, "-=0.2");
     };
     doExitRef.current = doExit;
 
     const tl = gsap.timeline({ defaults: { ease: "power3.inOut" } });
 
-    // ═══ Phase 1: 光束出现 ═══
-    // 光束从左上角对角扫入 — clip-path 从窄条扩开
-    tl.fromTo(beamRef.current,
-      { clipPath: "polygon(0 0, 15% 0, 0 15%, 0 0)" },
-      { clipPath: "polygon(0 0, 25% 0, 0 25%, 0 0)", duration: 0.6, ease: "power3.out" }
-    );
+    // ═══ 光斑形状缓缓亮起 ═══
+    // maskRef 覆盖在照片上方，用 radial-gradient 遮罩：中心光斑处透明，其余黑色
+    // 初始：全黑，光斑大小为 0
+    gsap.set(maskRef.current, {
+      background: "radial-gradient(ellipse 0% 0% at 25% 35%, transparent 0%, black 0%)",
+    });
 
-    // ═══ Phase 2: 光束横扫 ═══
-    tl.to(beamRef.current, {
-      clipPath: "polygon(0 0, 100% 0, 0 100%, 0 0)",
-      duration: 1.2,
+    // 光斑逐渐扩大 — 模拟照片中自然光斑的形状
+    tl.to(maskRef.current, {
+      duration: 2.0,
       ease: "power4.inOut",
+      // 用 GSAP 更新 CSS 变量/属性来实现渐变扩大
+      onUpdate: function() {
+        const progress = this.progress();
+        const size = progress * 60; // ellipse size grows
+        const fade = progress < 0.3 ? progress / 0.3 : 1;
+        if (maskRef.current) {
+          maskRef.current.style.background = `radial-gradient(ellipse ${size}% ${size * 0.7}% at 25% 35%, transparent 0%, rgba(0,0,0,${(1 - fade).toFixed(2)}) 100%)`;
+        }
+      },
     });
 
-    // ═══ Phase 3: 文字在光束中浮现 ═══
+    // ═══ 文字在光斑中浮现 ═══
     tl.fromTo(textRef.current,
-      { opacity: 0, textShadow: "0 0 0px rgba(200,160,80,0)" },
-      { opacity: 1, textShadow: "0 0 20px rgba(200,160,80,0.6), 0 0 40px rgba(200,160,80,0.3)", duration: 0.8, ease: "power2.out" },
-      "-=1.0"
+      { opacity: 0, filter: "blur(8px)" },
+      { opacity: 1, filter: "blur(0px)", duration: 1.0, ease: "power3.out" },
+      "-=1.4"
     );
 
-    // ═══ Phase 4: 光束扩散成全屏 — 照片完全显现 ═══
-    tl.to(beamRef.current, {
-      clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
-      duration: 0.7,
-      ease: "power3.out",
-    });
+    // 光斑完全打开后：淡出遮罩，完整照片可见
+    tl.to(maskRef.current, {
+      opacity: 0,
+      duration: 0.8,
+      ease: "power2.in",
+    }, "+=0.5");
 
-    // 光束淡出，露出原始照片
-    tl.to(beamRef.current, { opacity: 0, duration: 0.5, ease: "power2.in" }, "+=0.3");
-    tl.set(beamRef.current, { display: "none" });
-
-    // ═══ Phase 5: Logo + Enter ═══
+    // ═══ Logo + Enter ═══
     tl.fromTo(logoRef.current,
       { opacity: 0, y: 16 },
       { opacity: 1, y: 0, duration: 0.8, ease: "power4.out" }
@@ -82,10 +86,10 @@ export function Preloader() {
     // Fallback
     setTimeout(() => {
       if (containerRef.current && containerRef.current.style.display !== "none") {
-        if (beamRef.current) { beamRef.current.style.clipPath = "polygon(0 0, 100% 0, 100% 100%, 0 100%)"; beamRef.current.style.opacity = "1"; }
+        if (maskRef.current) { maskRef.current.style.opacity = "0"; }
         if (logoRef.current) { logoRef.current.style.opacity = "1"; logoRef.current.style.transform = "translateY(0)"; }
         if (enterRef.current) { enterRef.current.style.opacity = "1"; enterRef.current.style.transform = "translateY(0)"; }
-        if (textRef.current) textRef.current.style.opacity = "1";
+        if (textRef.current) { textRef.current.style.opacity = "1"; textRef.current.style.filter = "none"; }
       }
     }, 8000);
   }, []);
@@ -94,39 +98,27 @@ export function Preloader() {
     <div ref={containerRef} className="fixed inset-0 z-[9999] bg-black flex items-center justify-center"
       style={{ height: "100dvh" }} suppressHydrationWarning>
 
-      {/* 底层：完整照片（暗色） */}
+      {/* 照片层 */}
       <div ref={photoRef} className="absolute inset-0">
-        <img src="/splash-bg.webp" alt="" className="w-full h-full object-cover opacity-40" />
+        <img src="/splash-bg.webp" alt="" className="w-full h-full object-cover" />
       </div>
 
-      {/* 光束层：clip-path 扫过的区域更亮 */}
-      <div ref={beamRef} className="absolute inset-0 z-10"
-        style={{ clipPath: "polygon(0 0, 0 0, 0 0, 0 0)" }}>
-        {/* 亮版照片 */}
-        <img src="/splash-bg.webp" alt="" className="w-full h-full object-cover brightness-125 saturate-110" />
-        {/* 光束暖色叠加 */}
-        <div className="absolute inset-0" style={{
-          background: "linear-gradient(135deg, rgba(200,150,60,0.3) 0%, rgba(200,150,60,0.1) 50%, transparent 100%)",
-        }} />
-        {/* 光束边缘发光 */}
-        <div className="absolute inset-0" style={{
-          boxShadow: "inset 0 0 80px rgba(200,150,60,0.2)",
-        }} />
-      </div>
+      {/* 遮罩层：光斑形状渐变揭示 */}
+      <div ref={maskRef} className="absolute inset-0 z-10" />
 
-      {/* Welcome to ADDA Zone 文字 */}
-      <div ref={textRef} className="absolute z-20 flex items-center justify-center opacity-0"
+      {/* Welcome to ADDA Zone — 在光斑中浮现 */}
+      <div ref={textRef} className="absolute z-20 opacity-0"
         style={{
-          top: "35%",
-          left: "15%",
-          transform: "rotate(-2deg)",
+          top: "28%",
+          left: "20%",
         }}>
         <p style={{
           fontFamily: "var(--font-display)",
-          fontSize: "clamp(18px, 3.5vw, 48px)",
+          fontSize: "clamp(16px, 3vw, 44px)",
           color: "#c8a050",
-          letterSpacing: "0.08em",
-          filter: "drop-shadow(0 0 10px rgba(200,160,80,0.6))",
+          letterSpacing: "0.06em",
+          lineHeight: 1.3,
+          textShadow: "0 0 30px rgba(180,140,60,0.5), 0 0 60px rgba(180,140,60,0.2)",
         }}>
           Welcome to<br />ADDA Zone
         </p>
@@ -136,14 +128,14 @@ export function Preloader() {
       <div ref={logoRef} className="absolute z-30 opacity-0 flex flex-col items-center"
         style={{ bottom: "clamp(40px, 8vw, 80px)", gap: "clamp(16px, 3vw, 32px)" }}>
         <img src="/logo.webp" alt="ADDA" className="w-auto"
-          style={{ height: "clamp(48px, 8vw, 100px)", filter: "brightness(1.1)" }} />
-        <p className="text-white/25 uppercase tracking-[0.35em] text-center"
+          style={{ height: "clamp(48px, 8vw, 100px)" }} />
+        <p className="text-white/20 uppercase tracking-[0.35em] text-center"
           style={{ fontFamily: "var(--font-body)", fontSize: "clamp(8px, 0.9vw, 11px)" }}>
           Architecture &amp; Design
         </p>
         <div ref={enterRef} className="opacity-0">
           <button onClick={() => doExitRef.current()}
-            className="text-white/40 hover:text-white/90 border border-white/15 hover:border-white/35 uppercase tracking-[.3em] transition-all duration-500"
+            className="text-white/30 hover:text-white/80 border border-white/10 hover:border-white/30 uppercase tracking-[.3em] transition-all duration-500"
             style={{ fontFamily: "var(--font-body)", fontSize: "clamp(10px, 1.1vw, 12px)", padding: "clamp(6px, 1vw, 12px) clamp(20px, 3vw, 36px)", background: "transparent" }}>
             Enter
           </button>
