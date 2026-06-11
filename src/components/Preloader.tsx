@@ -74,29 +74,29 @@ export function Preloader() {
     tl.to(counterRowRef.current, { x: -1, duration: 0.06, ease: "none" });
     tl.to(counterRowRef.current, { x: 0, duration: 0.06, ease: "none" });
 
-    // 2b — 纸张绷紧（scaleY 压缩）
-    tl.to(tearTopRef.current, { scaleY: 1.02, duration: 0.15, ease: "power2.in" }, `${label}+=0.1`);
-    tl.to(tearBotRef.current, { scaleY: 1.02, duration: 0.15, ease: "power2.in" }, `${label}+=0.1`);
+    // 2b — 纸张绷紧
+    tl.to(tearTopRef.current, { scaleY: 1.03, duration: 0.2, ease: "power2.in" }, `${label}+=0.1`);
+    tl.to(tearBotRef.current, { scaleY: 1.03, duration: 0.2, ease: "power2.in" }, `${label}+=0.1`);
 
     // 2c — 裂缝出现
     tl.to(counterRowRef.current, { opacity: 0.3, duration: 0.15, ease: "power2.in" });
 
-    // 2d — 撕裂！上半先裂，下半紧随
+    // 2d — 撕裂！上半先裂开，3D 卷曲
     tl.to(tearTopRef.current, {
-      y: "-120%", rotation: -4, scaleY: 1,
-      duration: 0.8, ease: "power4.in",
+      y: "-120%", rotateX: -15, scaleY: 1,
+      duration: 0.7, ease: "power3.in",
     }, `${label}+=0.3`);
 
     tl.to(tearBotRef.current, {
-      y: "120%", rotation: 4, scaleY: 1,
-      duration: 0.75, ease: "power4.in",
+      y: "120%", rotateX: 15, scaleY: 1,
+      duration: 0.65, ease: "power3.in",
     }, `${label}+=0.38`);
 
-    // 2e — 微弹（纸张惯性）
-    tl.to(tearTopRef.current, { y: "-118%", duration: 0.15, ease: "power2.out" }, "-=0.1");
-    tl.to(tearTopRef.current, { y: "-120%", duration: 0.1, ease: "power2.in" });
-    tl.to(tearBotRef.current, { y: "118%", duration: 0.15, ease: "power2.out" }, "-=0.15");
-    tl.to(tearBotRef.current, { y: "120%", duration: 0.1, ease: "power2.in" });
+    // 2e — 微弹
+    tl.to(tearTopRef.current, { y: "-117%", rotateX: -14, duration: 0.2, ease: "power2.out" }, "-=0.1");
+    tl.to(tearTopRef.current, { y: "-120%", rotateX: -15, duration: 0.12, ease: "power2.in" });
+    tl.to(tearBotRef.current, { y: "117%", rotateX: 14, duration: 0.2, ease: "power2.out" }, "-=0.2");
+    tl.to(tearBotRef.current, { y: "120%", rotateX: 15, duration: 0.12, ease: "power2.in" });
 
     // 2f — 计数器消失
     tl.to(counterRowRef.current, { opacity: 0, duration: 0.2, ease: "power2.in" }, `${label}+=0.4`);
@@ -162,7 +162,7 @@ export function Preloader() {
       style={{ height: "100dvh" }}
       suppressHydrationWarning
     >
-      <div className="relative w-full h-full grid" style={{ placeItems: "center" }}>
+      <div className="relative w-full h-full grid" style={{ placeItems: "center", perspective: "1200px" }}>
 
         {/* ── 撕纸面板（上） ── */}
         <div
