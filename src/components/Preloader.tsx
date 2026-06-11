@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
-import Waves from "@/components/Waves";
 import BlobCursor from "@/components/BlobCursor/BlobCursor";
 
 export function Preloader() {
@@ -166,23 +165,6 @@ export function Preloader() {
           >
             Into Existence
           </span>
-        </div>
-
-        {/* Waves 背景 */}
-        <div className="absolute inset-0 opacity-70" style={{ pointerEvents: "none" }}>
-          <Waves
-            lineColor="rgba(255,255,255,0.35)"
-            backgroundColor="transparent"
-            waveSpeedX={0.01}
-            waveSpeedY={0.004}
-            waveAmpX={24}
-            waveAmpY={12}
-            xGap={14}
-            yGap={36}
-            friction={0.93}
-            tension={0.004}
-            maxCursorMove={80}
-          />
         </div>
 
         {/* Logo + Enter button — same center position */}
