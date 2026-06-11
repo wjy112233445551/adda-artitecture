@@ -158,7 +158,7 @@ export function Preloader() {
   return (
     <div
       ref={containerRef}
-      className="fixed inset-0 z-[9999] bg-[#0d0d0c] flex items-center justify-center"
+      className="fixed inset-0 z-[9999] bg-[#141210] flex items-center justify-center"
       style={{ height: "100dvh" }}
       suppressHydrationWarning
     >
@@ -170,10 +170,9 @@ export function Preloader() {
           className="absolute inset-x-0 z-20"
           style={{
             top: 0,
-            height: "50%",
+            height: "55%",
             background: "#141210 url(/paper-bg.webp) repeat",
             backgroundSize: "auto",
-            backgroundColor: "#1a1a1a",
             clipPath: `polygon(0 0, 100% 0, 100% 100%, ${tearEdge}, 0% 100%)`, // tearEdge at bottom of top panel
             boxShadow: "0 4px 16px rgba(0,0,0,0.5)",
           }}
@@ -185,7 +184,7 @@ export function Preloader() {
           className="absolute inset-x-0 z-20"
           style={{
             bottom: 0,
-            height: "50%",
+            height: "55%",
             background: "#141210 url(/paper-bg.webp) repeat",
             backgroundSize: "auto",
             clipPath: `polygon(0 0, ${tearEdgeBottom}, 100% 0, 100% 100%, 0 100%)`, // tearEdge at top of bottom panel
