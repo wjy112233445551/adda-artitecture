@@ -38,12 +38,12 @@ export function Preloader() {
 
     // 球初始：右侧屏幕外
     gsap.set(ballRef.current, {
-      x: "110vw", y: "25vh",
-      width: "clamp(10px, 1.8vw, 20px)",
-      height: "clamp(10px, 1.8vw, 20px)",
+      x: "110vw", y: "20vh",
+      width: "clamp(18px, 3vw, 36px)",
+      height: "clamp(18px, 3vw, 36px)",
       borderRadius: "50%",
-      background: "white",
-      boxShadow: "0 0 16px rgba(255,255,255,0.5), 0 0 32px rgba(255,255,255,0.2)",
+      background: "radial-gradient(circle at 35% 35%, #fff, #e8e0d0)",
+      boxShadow: "0 0 24px rgba(255,255,255,0.6), 0 0 60px rgba(255,255,255,0.25), 0 0 100px rgba(255,240,210,0.15)",
     });
 
     // ── 弹跳序列：3次落地，squash & stretch ──
@@ -67,12 +67,12 @@ export function Preloader() {
     tl.to(ballRef.current, { scaleX: 0.7, scaleY: 1.35, duration: 0.07 });
     tl.to(ballRef.current, { scaleX: 1, scaleY: 1, duration: 0.2, ease: "elastic.out(1,0.3)" });
 
-    // 弹跳 3：精准落在三角光束中心
+    // 弹跳 3：精准落在三角光束中心 (25%, 35%)
     tl.to(ballRef.current, {
-      x: "52vw", y: "42vh", duration: 0.5, ease: "power2.out",
+      x: "30vw", y: "30vh", duration: 0.5, ease: "power2.out",
     });
     tl.to(ballRef.current, {
-      x: "50vw", y: "48vh", duration: 0.4, ease: "power2.in",
+      x: "25vw", y: "35vh", duration: 0.4, ease: "power2.in",
     });
     tl.to(ballRef.current, { scaleX: 1.5, scaleY: 0.5, duration: 0.04 }, "-=0.02");
 
@@ -91,8 +91,8 @@ export function Preloader() {
       p.style.width = `${2 + Math.random() * 5}px`;
       p.style.height = p.style.width;
       p.style.background = "white";
-      p.style.left = "50vw";
-      p.style.top = "48vh";
+      p.style.left = "25vw";
+      p.style.top = "35vh";
       p.style.opacity = "0";
       p.style.boxShadow = "0 0 6px rgba(255,255,255,0.4)";
       containerRef.current?.appendChild(p);
@@ -118,8 +118,8 @@ export function Preloader() {
       maskSize: "0%",
       WebkitMaskRepeat: "no-repeat",
       maskRepeat: "no-repeat",
-      WebkitMaskPosition: "center",
-      maskPosition: "center",
+      WebkitMaskPosition: "25% 35%",
+      maskPosition: "25% 35%",
     });
 
     tl.to(splashRef.current, {
@@ -177,7 +177,7 @@ export function Preloader() {
       {/* 光斑溅射层 — 三角光束遮罩形状 */}
       <div ref={splashRef} className="absolute inset-0 z-10 pointer-events-none"
         style={{
-          background: "radial-gradient(ellipse at 50% 45%, rgba(255,252,245,0.95) 0%, rgba(255,240,210,0.5) 40%, rgba(200,150,80,0.15) 70%, transparent 90%)",
+          background: "radial-gradient(ellipse at 25% 35%, rgba(255,252,245,0.95) 0%, rgba(255,240,210,0.5) 40%, rgba(200,150,80,0.15) 70%, transparent 90%)",
         }}
       />
 
