@@ -16,10 +16,11 @@ export default function BlobCursor() {
 
   return (
     <div ref={containerRef} onMouseMove={handleMove} onTouchMove={handleMove}
-      style={{ position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 100 }}>
+      style={{ position: 'fixed', inset: 0, zIndex: 100 }}>
       <div ref={blobRef} style={{
         position: 'absolute', width: 60, height: 60, borderRadius: '50%',
         backgroundColor: 'rgba(255,255,255,0.4)', transform: 'translate(-50%,-50%)',
+        pointerEvents: 'none',
       }}>
         <div style={{
           position: 'absolute', width: 16, height: 16, top: 22, left: 22,
