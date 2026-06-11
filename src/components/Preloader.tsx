@@ -3,10 +3,13 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 
+// 自定义缓动：前 60% 极慢（暗房适应），后 40% 加速亮起
+const darkroomEase = "M0,0 C0.6,0.05 0.7,0.3 1,1";
+
 export function Preloader() {
   const containerRef = useRef<HTMLDivElement>(null);
   const maskRef = useRef<HTMLDivElement>(null);
-  const photoRef = useRef<HTMLDivElement>(null);
+  const glowRef = useRef<HTMLDivElement>(null);
   const logoRef = useRef<HTMLDivElement>(null);
   const enterRef = useRef<HTMLDivElement>(null);
   const started = useRef(false);
@@ -28,50 +31,59 @@ export function Preloader() {
           if (containerRef.current) containerRef.current.style.display = "none";
         },
       });
-      exitTimeline.current.to([logoRef.current, enterRef.current, maskRef.current], { opacity: 0, duration: 0.4, ease: "power2.in" });
+      exitTimeline.current.to([logoRef.current, enterRef.current, glowRef.current], { opacity: 0, duration: 0.4, ease: "power2.in" });
       exitTimeline.current.to(containerRef.current, { opacity: 0, duration: 0.5, ease: "power3.inOut" }, "-=0.2");
     };
     doExitRef.current = doExit;
 
-    const tl = gsap.timeline({ defaults: { ease: "power3.inOut" } });
+    const tl = gsap.timeline();
 
-    // ═══ 光斑形状缓缓亮起 ═══
-    // maskRef 覆盖在照片上方，用 radial-gradient 遮罩：中心光斑处透明，其余黑色
-    // 初始：全黑，光斑大小为 0
-    gsap.set(maskRef.current, {
-      background: "radial-gradient(ellipse 0% 0% at 25% 35%, transparent 0%, black 0%)",
-    });
+    // ═══ 光斑显影（4s，暗房曲线）═══
+    const revealObj = { progress: 0 };
 
-    // 光斑缓缓亮起 — 非常慢，像暗房显影
-    tl.to(maskRef.current, {
-      duration: 6.0,
-      ease: "none",
-      onUpdate: function() {
-        const p = this.progress();
-        // 前 60% 时间光斑从小到大，后 40% 保持大小但更亮
-        const size = p < 0.6 ? p / 0.6 * 55 : 55;
-        const fade = p < 0.4 ? p / 0.4 : 1;
+    tl.to(revealObj, {
+      progress: 1,
+      duration: 4.0,
+      ease: darkroomEase,
+      onUpdate: () => {
+        const p = revealObj.progress;
+        // 光斑大小：0 → 50%（前80%时间）→ 55%（最后20%轻微扩大）
+        const size = p < 0.8 ? p / 0.8 * 50 : 50 + (p - 0.8) / 0.2 * 5;
+        // 遮罩透明度：从不透明黑 → 半透明（光斑处完全透出照片）
+        const maskAlpha = 1 - p * 0.88;
+
         if (maskRef.current) {
-          maskRef.current.style.background = `radial-gradient(ellipse ${size}% ${size * 0.7}% at 25% 35%, transparent 0%, rgba(0,0,0,${(1 - fade * 0.85).toFixed(2)}) 100%)`;
+          maskRef.current.style.background = `
+            radial-gradient(
+              ellipse ${size}% ${size * 0.72}% at 25% 35%,
+              transparent 0%,
+              rgba(2,2,2,${maskAlpha.toFixed(3)}) 65%,
+              rgba(2,2,2,1) 100%
+            )
+          `;
+        }
+        // 光斑边缘暖光晕
+        if (glowRef.current) {
+          glowRef.current.style.opacity = String(p * 0.3);
+          glowRef.current.style.background = `
+            radial-gradient(
+              ellipse ${size}% ${size * 0.72}% at 25% 35%,
+              rgba(200,150,60,0.25) 0%,
+              rgba(200,150,60,0.05) 60%,
+              transparent 100%
+            )
+          `;
         }
       },
     });
 
-    // 光斑完全打开后：停顿，再淡出遮罩
-    tl.to({}, { duration: 0.8 });
-    tl.to(maskRef.current, {
-      opacity: 0,
-      duration: 1.0,
-      ease: "power2.in",
-    });
-
-    // ═══ Logo + Enter ═══
+    // ═══ 光斑全亮后：Logo + Enter ═══
     tl.fromTo(logoRef.current,
-      { opacity: 0, y: 16 },
-      { opacity: 1, y: 0, duration: 0.8, ease: "power4.out" }
+      { opacity: 0, y: 20 },
+      { opacity: 1, y: 0, duration: 0.9, ease: "power4.out" }
     );
     tl.fromTo(enterRef.current,
-      { opacity: 0, y: 8 },
+      { opacity: 0, y: 10 },
       { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" },
       "-=0.3"
     );
@@ -80,10 +92,11 @@ export function Preloader() {
     setTimeout(() => {
       if (containerRef.current && containerRef.current.style.display !== "none") {
         if (maskRef.current) { maskRef.current.style.opacity = "0"; }
+        if (glowRef.current) { glowRef.current.style.opacity = "0"; }
         if (logoRef.current) { logoRef.current.style.opacity = "1"; logoRef.current.style.transform = "translateY(0)"; }
         if (enterRef.current) { enterRef.current.style.opacity = "1"; enterRef.current.style.transform = "translateY(0)"; }
       }
-    }, 8000);
+    }, 10000);
   }, []);
 
   return (
@@ -91,12 +104,19 @@ export function Preloader() {
       style={{ height: "100dvh" }} suppressHydrationWarning>
 
       {/* 照片层 */}
-      <div ref={photoRef} className="absolute inset-0">
+      <div className="absolute inset-0">
         <img src="/splash-bg.webp" alt="" className="w-full h-full object-cover" />
       </div>
 
-      {/* 遮罩层：光斑形状渐变揭示 */}
-      <div ref={maskRef} className="absolute inset-0 z-10" />
+      {/* 光斑暖光晕 */}
+      <div ref={glowRef} className="absolute inset-0 z-10 opacity-0 pointer-events-none" />
+
+      {/* 暗色遮罩 — 覆盖在照片上，光斑处透明 */}
+      <div ref={maskRef} className="absolute inset-0 z-20"
+        style={{
+          background: "radial-gradient(ellipse 0% 0% at 25% 35%, transparent 0%, rgba(2,2,2,1) 65%, rgba(2,2,2,1) 100%)",
+        }}
+      />
 
       {/* Logo + Enter */}
       <div ref={logoRef} className="absolute z-30 opacity-0 flex flex-col items-center"
