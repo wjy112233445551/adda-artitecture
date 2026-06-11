@@ -30,7 +30,7 @@ export default function About() {
     <div ref={containerRef} className="max-w-[1400px] mx-auto px-6 pt-32 pb-16 opacity-0">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24">
         <div>
-          <h1 className="text-white leading-[1.1] mb-6" style={{ fontFamily: "var(--font-display)", fontSize: "clamp(34px, 5vw, 62px)" }}>
+          <h1 className="text-white leading-[1.15] mb-6" style={{ fontFamily: "var(--font-display)", fontSize: "clamp(34px, 5vw, 62px)", letterSpacing: "0.03em" }}>
             Elevating<br />Spaces,<br />Defining<br />Aesthetics
           </h1>
         </div>
