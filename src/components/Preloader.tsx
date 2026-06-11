@@ -42,16 +42,17 @@ export function Preloader() {
       background: "radial-gradient(ellipse 0% 0% at 25% 35%, transparent 0%, black 0%)",
     });
 
-    // 光斑缓缓亮起 — 慢速，自然呼吸感
+    // 光斑缓缓亮起 — 非常慢，像暗房显影
     tl.to(maskRef.current, {
-      duration: 3.5,
-      ease: "power3.inOut",
+      duration: 6.0,
+      ease: "none",
       onUpdate: function() {
-        const progress = this.progress();
-        const size = progress * 65;
-        const fade = progress < 0.25 ? progress / 0.25 : 1;
+        const p = this.progress();
+        // 前 60% 时间光斑从小到大，后 40% 保持大小但更亮
+        const size = p < 0.6 ? p / 0.6 * 55 : 55;
+        const fade = p < 0.4 ? p / 0.4 : 1;
         if (maskRef.current) {
-          maskRef.current.style.background = `radial-gradient(ellipse ${size}% ${size * 0.7}% at 25% 35%, transparent 0%, rgba(0,0,0,${(1 - fade).toFixed(2)}) 100%)`;
+          maskRef.current.style.background = `radial-gradient(ellipse ${size}% ${size * 0.7}% at 25% 35%, transparent 0%, rgba(0,0,0,${(1 - fade * 0.85).toFixed(2)}) 100%)`;
         }
       },
     });
