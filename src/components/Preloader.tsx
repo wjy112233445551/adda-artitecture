@@ -165,7 +165,8 @@ export function Preloader() {
           style={{
             top: 0,
             height: "50%",
-            background: "#1a1a1a",
+            background: "#1e1c19 url(/paper-bg.webp) repeat",
+            backgroundSize: "auto",
             backgroundColor: "#1a1a1a",
             clipPath: `polygon(0 0, 100% 0, 100% 100%, ${tearEdge}, 0% 100%)`, // tearEdge at bottom of top panel
             boxShadow: "0 4px 16px rgba(0,0,0,0.5)",
@@ -179,18 +180,10 @@ export function Preloader() {
           style={{
             bottom: 0,
             height: "50%",
-            background: "#1a1a1a",
+            background: "#1e1c19 url(/paper-bg.webp) repeat",
+            backgroundSize: "auto",
             clipPath: `polygon(0 0, ${tearEdgeBottom}, 100% 0, 100% 100%, 0 100%)`, // tearEdge at top of bottom panel
             boxShadow: "0 -4px 16px rgba(0,0,0,0.5)",
-          }}
-        />
-
-        {/* ── 纸张纹理覆盖（全屏，低透明度）── */}
-        <div className="absolute inset-0 z-21 pointer-events-none"
-          style={{
-            background: "url(/paper-bg.webp) repeat",
-            backgroundSize: "auto",
-            opacity: 0.06,
           }}
         />
 
