@@ -7,7 +7,6 @@ export function Preloader() {
   const containerRef = useRef<HTMLDivElement>(null);
   const maskRef = useRef<HTMLDivElement>(null);
   const photoRef = useRef<HTMLDivElement>(null);
-  const textRef = useRef<HTMLDivElement>(null);
   const logoRef = useRef<HTMLDivElement>(null);
   const enterRef = useRef<HTMLDivElement>(null);
   const started = useRef(false);
@@ -43,34 +42,27 @@ export function Preloader() {
       background: "radial-gradient(ellipse 0% 0% at 25% 35%, transparent 0%, black 0%)",
     });
 
-    // 光斑逐渐扩大 — 模拟照片中自然光斑的形状
+    // 光斑缓缓亮起 — 慢速，自然呼吸感
     tl.to(maskRef.current, {
-      duration: 2.0,
-      ease: "power4.inOut",
-      // 用 GSAP 更新 CSS 变量/属性来实现渐变扩大
+      duration: 3.5,
+      ease: "power3.inOut",
       onUpdate: function() {
         const progress = this.progress();
-        const size = progress * 60; // ellipse size grows
-        const fade = progress < 0.3 ? progress / 0.3 : 1;
+        const size = progress * 65;
+        const fade = progress < 0.25 ? progress / 0.25 : 1;
         if (maskRef.current) {
           maskRef.current.style.background = `radial-gradient(ellipse ${size}% ${size * 0.7}% at 25% 35%, transparent 0%, rgba(0,0,0,${(1 - fade).toFixed(2)}) 100%)`;
         }
       },
     });
 
-    // ═══ 文字在光斑中浮现 ═══
-    tl.fromTo(textRef.current,
-      { opacity: 0, filter: "blur(8px)" },
-      { opacity: 1, filter: "blur(0px)", duration: 1.0, ease: "power3.out" },
-      "-=1.4"
-    );
-
-    // 光斑完全打开后：淡出遮罩，完整照片可见
+    // 光斑完全打开后：停顿，再淡出遮罩
+    tl.to({}, { duration: 0.8 });
     tl.to(maskRef.current, {
       opacity: 0,
-      duration: 0.8,
+      duration: 1.0,
       ease: "power2.in",
-    }, "+=0.5");
+    });
 
     // ═══ Logo + Enter ═══
     tl.fromTo(logoRef.current,
@@ -89,7 +81,6 @@ export function Preloader() {
         if (maskRef.current) { maskRef.current.style.opacity = "0"; }
         if (logoRef.current) { logoRef.current.style.opacity = "1"; logoRef.current.style.transform = "translateY(0)"; }
         if (enterRef.current) { enterRef.current.style.opacity = "1"; enterRef.current.style.transform = "translateY(0)"; }
-        if (textRef.current) { textRef.current.style.opacity = "1"; textRef.current.style.filter = "none"; }
       }
     }, 8000);
   }, []);
@@ -105,24 +96,6 @@ export function Preloader() {
 
       {/* 遮罩层：光斑形状渐变揭示 */}
       <div ref={maskRef} className="absolute inset-0 z-10" />
-
-      {/* Welcome to ADDA Zone — 在光斑中浮现 */}
-      <div ref={textRef} className="absolute z-20 opacity-0"
-        style={{
-          top: "28%",
-          left: "20%",
-        }}>
-        <p style={{
-          fontFamily: "var(--font-display)",
-          fontSize: "clamp(16px, 3vw, 44px)",
-          color: "#c8a050",
-          letterSpacing: "0.06em",
-          lineHeight: 1.3,
-          textShadow: "0 0 30px rgba(180,140,60,0.5), 0 0 60px rgba(180,140,60,0.2)",
-        }}>
-          Welcome to<br />ADDA Zone
-        </p>
-      </div>
 
       {/* Logo + Enter */}
       <div ref={logoRef} className="absolute z-30 opacity-0 flex flex-col items-center"
