@@ -10,6 +10,7 @@ import gsap from "gsap";
 
 export default function Home() {
   const heroRef = useRef<HTMLDivElement>(null);
+  const sentinelRef = useRef<HTMLDivElement>(null);
   const searchParams = useSearchParams();
   const category = searchParams.get("category") || "";
   const [projects, setProjects] = useState<Project[]>([]);
@@ -17,6 +18,7 @@ export default function Home() {
   const [modalRect, setModalRect] = useState<DOMRect | null>(null);
   const [modalSlide, setModalSlide] = useState<"left" | "right" | "top">("right");
   const [visibleCount, setVisibleCount] = useState(6);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const api = category === "rendering" ? "/api/renderings" : "/api/projects";
@@ -106,6 +108,26 @@ export default function Home() {
       el.removeEventListener("scroll", handleScroll);
     };
   }, [carouselProjects]);
+
+  // Infinite scroll — auto load more when scrolling near bottom
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel || gridProjects.length <= visibleCount) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !loading) {
+          setLoading(true);
+          setTimeout(() => {
+            setVisibleCount((c) => Math.min(c + 6, gridProjects.length));
+            setLoading(false);
+          }, 300);
+        }
+      },
+      { rootMargin: "200px" }
+    );
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [visibleCount, gridProjects.length, loading]);
 
   return (
     <div className="max-w-[1400px] mx-auto px-6 pt-24 pb-16">
@@ -217,19 +239,18 @@ export default function Home() {
       {/* Project Grid */}
       <section className="grid grid-cols-1 md:grid-cols-2" style={{ gap: "clamp(16px, 2vw, 32px)" }}>
         {gridProjects.slice(0, visibleCount).map((project, i) => (
-          <ProjectCard key={project.slug} project={project} index={i} onOpen={(p, r) => { setModalSlide(i % 2 === 0 ? "left" : "right"); setModalProject(p); setModalRect(r); }} />
+          <ProjectCard key={project.slug} project={project} index={i % 6} onOpen={(p, r) => { setModalSlide(i % 2 === 0 ? "left" : "right"); setModalProject(p); setModalRect(r); }} />
         ))}
       </section>
 
+      {/* Infinite scroll sentinel */}
       {gridProjects.length > visibleCount && (
-        <div className="flex justify-center" style={{ marginTop: "clamp(24px, 4vw, 48px)" }}>
-          <button
-            onClick={() => setVisibleCount((c) => Math.min(c + 6, gridProjects.length))}
-            className="text-white/30 hover:text-white border border-white/10 hover:border-white/30 px-8 py-3 text-xs tracking-[.2em] uppercase transition-all duration-300"
-            style={{ fontFamily: "var(--font-body)" }}
-          >
-            Show More ↓
-          </button>
+        <div ref={sentinelRef} className="flex justify-center" style={{ marginTop: "clamp(24px, 4vw, 48px)", padding: "clamp(20px, 4vw, 40px) 0" }}>
+          {loading && (
+            <span className="text-white/15 text-xs tracking-[.2em] uppercase" style={{ fontFamily: "var(--font-body)" }}>
+              Loading...
+            </span>
+          )}
         </div>
       )}
 

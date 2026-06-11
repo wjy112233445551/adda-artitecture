@@ -197,8 +197,8 @@ export function ProjectModal({
     gsap.to(slide, {
       x: outX,
       opacity: 0,
-      duration: 0.3,
-      ease: "power2.in",
+      duration: 0.35,
+      ease: "power3.inOut",
       onComplete: () => {
         gsap.set(slide, { x: 0 });
         window.scrollTo({ top: 0, behavior: "instant" });
