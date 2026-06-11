@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @font-face {
-  font-family: "Engry";
-  src: url("/fonts/engry.otf") format("opentype");
+  font-family: "Athena";
+  src: url("/fonts/athena.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -11,7 +11,7 @@
 @theme inline {
   --color-background: var(--bg);
   --color-foreground: var(--fg);
-  --font-display: "Engry", "Georgia", "Times New Roman", serif;
+  --font-display: "Athena", "Georgia", "Times New Roman", serif;
   --font-body: "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", system-ui, -apple-system, sans-serif;
 }
 
