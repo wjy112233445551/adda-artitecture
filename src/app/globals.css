@@ -1,10 +1,18 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Engry";
+  src: url("/fonts/engry.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme inline {
   --color-background: var(--bg);
   --color-foreground: var(--fg);
-  --font-display: "Georgia", "Times New Roman", "Songti SC", "Noto Serif CJK SC", serif;
-  --font-body: "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", "WenQuanYi Micro Hei", system-ui, -apple-system, sans-serif;
+  --font-display: "Engry", "Georgia", "Times New Roman", serif;
+  --font-body: "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", system-ui, -apple-system, sans-serif;
 }
 
 :root {
