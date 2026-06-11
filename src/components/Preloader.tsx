@@ -130,7 +130,7 @@ export function Preloader() {
     for (let i = 0; i <= segs; i++) {
       const x = i * step;
       // jitter around 100% (bottom edge of top panel)
-      const y = 100 + (Math.sin(i * 1.7) * 6 + Math.sin(i * 3.1) * 4);
+      const y = 100 + (Math.sin(i * 2.3) * 3 + Math.sin(i * 4.7) * 2);
       path += `${x}% ${y}%, `;
     }
     return path.slice(0, -2);
@@ -143,7 +143,7 @@ export function Preloader() {
     let path = "";
     for (let i = 0; i <= segs; i++) {
       const x = i * step;
-      const y = 0 + (Math.sin(i * 1.7) * 6 + Math.sin(i * 3.1) * 4);
+      const y = 0 + (Math.sin(i * 2.3) * 3 + Math.sin(i * 4.7) * 2);
       path += `${x}% ${y}%, `;
     }
     return path.slice(0, -2);
