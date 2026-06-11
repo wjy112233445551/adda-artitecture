@@ -165,9 +165,7 @@ export function Preloader() {
           style={{
             top: 0,
             height: "50%",
-            background: "url(/paper-grain.webp) repeat, url(/paper-overlay.webp) center/cover",
-            backgroundSize: "200px, cover",
-            backgroundBlendMode: "multiply, normal",
+            background: "url(/paper-bg.webp) center/cover",
             backgroundColor: "#1a1a1a",
             clipPath: `polygon(0 0, 100% 0, 100% 100%, ${tearEdge}, 0% 100%)`, // tearEdge at bottom of top panel
             boxShadow: "0 4px 16px rgba(0,0,0,0.5)",
