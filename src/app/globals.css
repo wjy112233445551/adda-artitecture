@@ -11,13 +11,13 @@
 @theme inline {
   --color-background: var(--bg);
   --color-foreground: var(--fg);
-  --font-display: "Athena", "Georgia", "Times New Roman", serif;
-  --font-body: "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", system-ui, -apple-system, sans-serif;
 }
 
 :root {
   --bg: #040404;
   --fg: #e5e5e5;
+  --font-display: "Athena", "Georgia", "Times New Roman", serif;
+  --font-body: "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", system-ui, -apple-system, sans-serif;
 }
 
 body {
