@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 @font-face {
-  font-family: "YEFONT";
-  src: url("/fonts/yefont.ttf") format("truetype");
+  font-family: "Athena";
+  src: url("/fonts/athena-v2.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -16,7 +16,7 @@
 :root {
   --bg: #040404;
   --fg: #e5e5e5;
-  --font-display: "YEFONT", "Georgia", "Times New Roman", serif;
+  --font-display: "Athena", "Georgia", "Times New Roman", serif;
   --font-body: "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", system-ui, -apple-system, sans-serif;
 }
 
