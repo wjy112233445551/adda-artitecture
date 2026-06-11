@@ -1,16 +1,9 @@
 @import "tailwindcss";
 
 @font-face {
-  font-family: "Optimus";
-  src: url("/fonts/optimus-regular.ttf") format("truetype");
+  font-family: "Engry";
+  src: url("/fonts/engry.otf") format("opentype");
   font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Optimus";
-  src: url("/fonts/optimus-semibold.ttf") format("truetype");
-  font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
@@ -23,7 +16,7 @@
 :root {
   --bg: #040404;
   --fg: #e5e5e5;
-  --font-display: "Optimus", "Georgia", "Times New Roman", serif;
+  --font-display: "Engry", "Georgia", "Times New Roman", serif;
   --font-body: "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", system-ui, -apple-system, sans-serif;
 }
 
