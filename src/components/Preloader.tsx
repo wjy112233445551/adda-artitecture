@@ -69,31 +69,37 @@ export function Preloader() {
     const label = "tear";
 
     // 2a — 蓄力：画面抖动
-    tl.to(counterRowRef.current, { x: -3, duration: 0.06, ease: "none" }, label);
-    tl.to(counterRowRef.current, { x: 4, duration: 0.06, ease: "none" });
-    tl.to(counterRowRef.current, { x: -2, duration: 0.05, ease: "none" });
-    tl.to(counterRowRef.current, { x: 0, duration: 0.05, ease: "none" });
+    tl.to(counterRowRef.current, { x: -2, duration: 0.08, ease: "none" }, label);
+    tl.to(counterRowRef.current, { x: 3, duration: 0.08, ease: "none" });
+    tl.to(counterRowRef.current, { x: -1, duration: 0.06, ease: "none" });
+    tl.to(counterRowRef.current, { x: 0, duration: 0.06, ease: "none" });
 
-    // 2b — 裂缝出现，计数器内容暗淡
-    tl.to(counterRowRef.current, { opacity: 0.3, duration: 0.2, ease: "power2.in" });
+    // 2b — 纸张绷紧（scaleY 压缩）
+    tl.to(tearTopRef.current, { scaleY: 1.02, duration: 0.15, ease: "power2.in" }, `${label}+=0.1`);
+    tl.to(tearBotRef.current, { scaleY: 1.02, duration: 0.15, ease: "power2.in" }, `${label}+=0.1`);
 
-    // 2c — 撕裂！纸面裂开
+    // 2c — 裂缝出现
+    tl.to(counterRowRef.current, { opacity: 0.3, duration: 0.15, ease: "power2.in" });
+
+    // 2d — 撕裂！上半先裂，下半紧随
     tl.to(tearTopRef.current, {
-      y: "-120%",
-      rotation: -3,
-      duration: 0.9,
-      ease: "power3.in",
-    }, `${label}+=0.25`);
+      y: "-120%", rotation: -4, scaleY: 1,
+      duration: 0.8, ease: "power4.in",
+    }, `${label}+=0.3`);
 
     tl.to(tearBotRef.current, {
-      y: "120%",
-      rotation: 3,
-      duration: 0.9,
-      ease: "power3.in",
-    }, `${label}+=0.25`);
+      y: "120%", rotation: 4, scaleY: 1,
+      duration: 0.75, ease: "power4.in",
+    }, `${label}+=0.38`);
 
-    // 2d — 计数器消失
-    tl.to(counterRowRef.current, { opacity: 0, duration: 0.3, ease: "power2.in" }, `${label}+=0.15`);
+    // 2e — 微弹（纸张惯性）
+    tl.to(tearTopRef.current, { y: "-118%", duration: 0.15, ease: "power2.out" }, "-=0.1");
+    tl.to(tearTopRef.current, { y: "-120%", duration: 0.1, ease: "power2.in" });
+    tl.to(tearBotRef.current, { y: "118%", duration: 0.15, ease: "power2.out" }, "-=0.15");
+    tl.to(tearBotRef.current, { y: "120%", duration: 0.1, ease: "power2.in" });
+
+    // 2f — 计数器消失
+    tl.to(counterRowRef.current, { opacity: 0, duration: 0.2, ease: "power2.in" }, `${label}+=0.4`);
     tl.set(counterRowRef.current, { display: "none" });
 
     // 2e — Logo 从裂缝中浮现
